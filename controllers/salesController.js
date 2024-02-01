@@ -75,7 +75,6 @@ class SalesController {
     }
     createSaleWithCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            //Tenemos que hacer una validación de que existe un carrito dado un usuario
             const { id } = req.params; //Id de usuario
             const respuesta = yield database_1.default.query(`SELECT * FROM cart_user where IdUser = ?`, [id]);
             if (respuesta.length > 0) {
@@ -89,15 +88,23 @@ class SalesController {
                         const datosTicket = { "IdProduct": Products[i].IdProduct, "Quantity": Products[i].Quantity, "IdSale": idSale };
                         const ans = yield database_1.default.query(`INSERT INTO sales_products set ?`, [datosTicket]);
                         const ajustarStock = yield database_1.default.query(`UPDATE products SET PiecesInStock = PiecesInStock  - ${Products[i].Quantity} WHERE IdProduct = ${Products[i].IdProduct}`);
-                        res.json(ans);
                     }
                     //Limpiamos el carrito
                     const ajustarCarritos = yield database_1.default.query(`DELETE FROM cart_user WHERE IdUser = ${id}`);
                     const ajustarCarrito_Productos = yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${getIdCarrito[0].IdCart}`);
+                    // Enviamos una respuesta de éxito con los datos de la última consulta
+                    const lastQuery = yield database_1.default.query(`SELECT * FROM sales WHERE IdSale = ?`, [idSale]);
+                    res.status(200).json(lastQuery);
                 }
-                return;
+                else {
+                    // Enviamos una respuesta de error 404 si no se encuentran productos en el carrito
+                    res.status(404).json({ 'message': 'Cart does not contain any products' });
+                }
             }
-            res.status(404).json({ 'message': 'Cart not found, we cant do a sale without a cart' });
+            else {
+                // Enviamos una respuesta de error 404 si no se encuentra ningún carrito para el usuario
+                res.status(404).json({ 'message': 'Cart not found, we cant do a sale without a cart' });
+            }
         });
     }
     createSaleWithoutCart(req, res) {

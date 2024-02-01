@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.countriesController = void 0;
 const database_1 = __importDefault(require("../database")); //acceso a la base de datos
 class CountriesController {
-    showAllCountries(req, res) {
+    show_all_countries(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM countries');
             res.json(respuesta);
@@ -24,7 +24,7 @@ class CountriesController {
     getCountry(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM countries WHERE IdCountry = ?', [id]);
+            const respuesta = yield database_1.default.query('SELECT * FROM countries WHERE idDriver = ?', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -32,25 +32,42 @@ class CountriesController {
             res.status(404).json({ 'message': 'Country not found' });
         });
     }
-    createCountry(req, res) {
+    //aqui va el crud
+    createUsuario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO countries set ?", [req.body]);
+            //console.log(req.body)
+            const resp = yield database_1.default.query("INSERT INTO usuarios set ?", [req.body]);
             res.json(resp);
+            //res.json(null);
         });
     }
-    updateCountry(req, res) {
+    actualizarUsuario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
+            //console.log(req.params);
             console.log(id);
-            const resp = yield database_1.default.query("UPDATE countries set ? WHERE IdCountry = ?", [req.body, id]);
+            const resp = yield database_1.default.query("UPDATE usuarios set ? WHERE id = ?", [req.body, id]);
+            res.json(resp);
+            //res.json(null);
+        });
+    }
+    eliminarUsuario(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM usuarios WHERE id = ${id}`);
             res.json(resp);
         });
     }
-    deleteCountry(req, res) {
+    listarUsuariosRol(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM countries WHERE IdCountry = ${id}`);
+            const resp = yield database_1.default.query(`SELECT nombre, nombre_rol FROM  usuarios LEFT JOIN roles on usuarios.id_rol = roles.id_rol WHERE usuarios.id_Rol = ${id};`);
             res.json(resp);
+            //if(resp.length>0){
+            //    res.json(resp);
+            //    return ;
+            //}
+            //res.status(404).json({'mensaje': 'No hay usuarios en ese rol'});
         });
     }
 }

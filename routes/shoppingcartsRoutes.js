@@ -17,6 +17,7 @@ class ShoppingcartsRoutes {
         this.router.get('/getShoppingcartFromEspecificUser/:id', shoppingcartsController_1.shoppingcartsController.getShoppingcart);
         this.router.post('/createShoppingcart/:id', shoppingcartsController_1.shoppingcartsController.createShoppingcart);
         this.router.put('/updateItemQuantityShoppingCart/:id', shoppingcartsController_1.shoppingcartsController.updateItemQuantityShoppingCart);
+        this.router.post('/addItemToShoppingCart/:id', shoppingcartsController_1.shoppingcartsController.addItemToShoppingCart);
         this.router.delete('/deleteShoppingcart/:id', shoppingcartsController_1.shoppingcartsController.deleteShoppingcart);
     }
 }
