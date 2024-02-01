@@ -46,7 +46,7 @@ class SalesController {
     getSaleByProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale,users.IdUser, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users WHERE products.IdProduct = ? and sales_products.IdSale = sales.IdSale', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users WHERE products.IdProduct = ? and sales_products.IdSale = sales.IdSale', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
                 return;
