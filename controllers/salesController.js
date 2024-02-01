@@ -24,7 +24,7 @@ class SalesController {
     getSale(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale,users.IdUser,users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = ? and sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = ? and sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
             }
@@ -34,7 +34,7 @@ class SalesController {
     getSaleByUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale,users.IdUser, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and users.IdUser = ?;', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and users.IdUser = ?;', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
                 return;
