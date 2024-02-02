@@ -33,7 +33,7 @@ class ShoppingcartsController {
                     return;
                 }
             }
-            res.status(404).json({ 'message': 'Cart not found' });
+            res.json({ message: "The user does not have a shopping cart", IdCart: -1 });
         });
     }
     createShoppingcart(req, res) {
@@ -42,12 +42,12 @@ class ShoppingcartsController {
             const datosCart_User = { "IdUser": id };
             const resp = yield database_1.default.query("INSERT INTO cart_user set ?", [datosCart_User]);
             const IdCart = resp.insertId;
-            const productosAñadir = req.body.length;
-            console.log(productosAñadir);
-            for (let i = 0; i < productosAñadir; i++) {
-                const datosCart_Product = { "IdCart": IdCart, "IdProduct": req.body[i].IdProduct, "Quantity": req.body[i].Quantity };
-                const ans = yield database_1.default.query(`INSERT INTO cart_product set ?`, [datosCart_Product]);
-            }
+            //const productosAñadir = req.body.length;
+            //console.log(productosAñadir);
+            //for (let i = 0; i < productosAñadir; i++) {
+            //    const datosCart_Product = {"IdCart": IdCart, "IdProduct": req.body[i].IdProduct, "Quantity": req.body[i].Quantity};
+            //    const ans = await pool.query(`INSERT INTO cart_product set ?`, [datosCart_Product]);
+            //}
             res.json(resp);
         });
     }
