@@ -97,5 +97,17 @@ class UsersController {
             res.json({ 'IdUser': -1 });
         });
     }
+    verifyAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
+            const respuesta = yield database_1.default.query('SELECT * FROM users WHERE Email = ? AND Password = ? AND is_admin = 1', [req.body.Email, req.body.Password]);
+            console.log("res:", respuesta);
+            if (respuesta.length > 0) {
+                res.json(respuesta[0]);
+                return;
+            }
+            res.json({ 'IdUser': -1 });
+        });
+    }
 }
 exports.usersController = new UsersController();

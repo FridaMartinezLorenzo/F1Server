@@ -27,6 +27,7 @@ class UsersRoutes {
         this.router.put('/updateUserPassword/:id', usersController_1.usersController.updateUserPassword);
         this.router.delete('/deleteUser/:id', usersController_1.usersController.deleteUser);
         this.router.post('/verifyUser/', usersController_1.usersController.verifyUser);
+        this.router.post('/verifyAdmin/', usersController_1.usersController.verifyAdmin);
     }
 }
 const usersRoutes = new UsersRoutes();

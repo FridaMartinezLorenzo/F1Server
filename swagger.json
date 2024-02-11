@@ -1530,6 +1530,42 @@
                 }
             }
         },
+        "/api/users/verifyAdmin/": {
+            "post": {
+                "summary": "Verificar que existe un usuario es administrador de la F1.",
+                "description": "<p>Servicio que permite verificar la existencia de un usuario con ese correo y contraseña en el sistema de la F1 y verificar si es admin</p><p>&nbsp;</p>",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "Usuario",
+                        "in": "body",
+                        "description": "Correo y contrasena del usuario",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/VerificarUsuario"
+                        }
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ],
+                "tags": ["Usuarios"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
         "/api/users/createUser": {
             "post": {
                 "summary": "Creando un usuario, ",
