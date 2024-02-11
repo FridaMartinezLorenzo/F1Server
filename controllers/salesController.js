@@ -78,23 +78,37 @@ class SalesController {
             const { id } = req.params; //Id de usuario
             const respuesta = yield database_1.default.query(`SELECT * FROM cart_user where IdUser = ?`, [id]);
             if (respuesta.length > 0) {
-                const datosSale = { "IdUser": respuesta[0].IdUser, "Date": req.body.Date };
-                const resp = yield database_1.default.query("INSERT INTO sales set ?", [datosSale]);
-                const idSale = resp.insertId;
-                const Products = yield database_1.default.query(`SELECT IdProduct, Quantity FROM cart_product WHERE IdCart = ? `, [respuesta[0].IdCart]);
-                const getIdCarrito = yield database_1.default.query(`SELECT IdCart FROM cart_user WHERE cart_user.IdUser = ?`, [id]);
+                const Products = yield database_1.default.query(`SELECT IdProduct, Quantity FROM cart_product WHERE IdCart = ?`, [respuesta[0].IdCart]);
                 if (Products.length > 0) {
-                    for (var i = 0; i < Products.length; i++) {
-                        const datosTicket = { "IdProduct": Products[i].IdProduct, "Quantity": Products[i].Quantity, "IdSale": idSale };
-                        const ans = yield database_1.default.query(`INSERT INTO sales_products set ?`, [datosTicket]);
-                        const ajustarStock = yield database_1.default.query(`UPDATE products SET PiecesInStock = PiecesInStock  - ${Products[i].Quantity} WHERE IdProduct = ${Products[i].IdProduct}`);
+                    // Verificar stock para cada producto en el carrito
+                    let outOfStockProducts = [];
+                    for (const product of Products) {
+                        const productData = yield database_1.default.query(`SELECT PiecesInStock FROM products WHERE IdProduct = ?`, [product.IdProduct]);
+                        if (productData[0].PiecesInStock < product.Quantity) {
+                            outOfStockProducts.push(product.IdProduct);
+                        }
                     }
-                    //Limpiamos el carrito
-                    const ajustarCarritos = yield database_1.default.query(`DELETE FROM cart_user WHERE IdUser = ${id}`);
-                    const ajustarCarrito_Productos = yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${getIdCarrito[0].IdCart}`);
-                    // Enviamos una respuesta de éxito con los datos de la última consulta
-                    const lastQuery = yield database_1.default.query(`SELECT * FROM sales WHERE IdSale = ?`, [idSale]);
-                    res.status(200).json(lastQuery);
+                    if (outOfStockProducts.length === 0) {
+                        // Si todos los productos tienen suficiente stock, proceder con la venta
+                        const datosSale = { "IdUser": respuesta[0].IdUser, "Date": req.body.Date };
+                        const resp = yield database_1.default.query("INSERT INTO sales set ?", [datosSale]);
+                        const idSale = resp.insertId;
+                        for (const product of Products) {
+                            const datosTicket = { "IdProduct": product.IdProduct, "Quantity": product.Quantity, "IdSale": idSale };
+                            yield database_1.default.query(`INSERT INTO sales_products set ?`, [datosTicket]);
+                            yield database_1.default.query(`UPDATE products SET PiecesInStock = PiecesInStock - ${product.Quantity} WHERE IdProduct = ${product.IdProduct}`);
+                        }
+                        // Limpiamos el carrito
+                        yield database_1.default.query(`DELETE FROM cart_user WHERE IdUser = ${id}`);
+                        yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${respuesta[0].IdCart}`);
+                        // Enviamos una respuesta de éxito con los datos de la venta
+                        const lastQuery = yield database_1.default.query(`SELECT * FROM sales WHERE IdSale = ?`, [idSale]);
+                        res.status(200).json(lastQuery);
+                    }
+                    else {
+                        // Si hay productos sin suficiente stock, enviar una respuesta de error
+                        res.status(400).json({ 'message': 'Not enough stock for products', 'outOfStockProducts': 1 });
+                    }
                 }
                 else {
                     // Enviamos una respuesta de error 404 si no se encuentran productos en el carrito
