@@ -32,6 +32,18 @@ class UsersController {
             res.status(404).json({ 'message': 'User not found' });
         });
     }
+    //Servicio para buscar un correo electronico, ya que solo se permite un correo electronico unico por cuenta
+    getUserEmail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.body.email;
+            const respuesta = yield database_1.default.query('SELECT * FROM users WHERE Email = ?', [email]);
+            if (respuesta.length > 0) {
+                res.json(respuesta[0]);
+                return;
+            }
+            res.json({ 'IdUser': -1 });
+        });
+    }
     createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const resp = yield database_1.default.query("INSERT INTO users set ?", [req.body]);

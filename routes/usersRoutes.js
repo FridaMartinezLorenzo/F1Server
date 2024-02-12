@@ -28,6 +28,7 @@ class UsersRoutes {
         this.router.delete('/deleteUser/:id', usersController_1.usersController.deleteUser);
         this.router.post('/verifyUser/', usersController_1.usersController.verifyUser);
         this.router.post('/verifyAdmin/', usersController_1.usersController.verifyAdmin);
+        this.router.post('/getUserByEmail/', usersController_1.usersController.getUserEmail);
     }
 }
 const usersRoutes = new UsersRoutes();

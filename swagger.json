@@ -1262,16 +1262,9 @@
                         "examples": {
                             "application/json": [
                                 {
-                                    "IdSale": 4,
-                                    "IdUser": 1,
-                                    "Date": "2023-08-12T06:00:00.000Z",
-                                    "IdProduct": 2,
-                                    "Quantity": 4
+                                    "Total": 100
                                 }
                             ]
-                        },
-                        "schema": {
-                            "$ref": "#/definitions/Venta"
                         }
                     },
                     "403": {
@@ -1483,6 +1476,60 @@
                         "description": "identificador del usuario",
                         "type": "number",
                         "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/users/getUserByEmail": {
+            "post": {
+                "tags": ["Usuarios"],
+                "summary": "Existe o no el correo en el sistema de la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de un usuario si es que existe un correo asociado</p><p>&nbsp;</p><p><em><strong>¿Cuál es el usuario asociado a este correo?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdUser": 1,
+                                    "Name": "Frida",
+                                    "LastName": "Martinez",
+                                    "Email": "frida@gmail.com",
+                                    "Password": "123*"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Usuario",
+                        "in": "body",
+                        "description": "Correo del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "Email": {
+                                    "type": "string",
+                                    "format": "email"
+                                }
+                            },
+                            "required": ["Email"]
+                        }
                     },
                     {
                         "description": "apiKey",
