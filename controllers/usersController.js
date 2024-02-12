@@ -35,8 +35,7 @@ class UsersController {
     //Servicio para buscar un correo electronico, ya que solo se permite un correo electronico unico por cuenta
     getUserEmail(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { email } = req.body.Email;
-            const respuesta = yield database_1.default.query('SELECT * FROM users WHERE Email = ?', [email]);
+            const respuesta = yield database_1.default.query('SELECT * FROM users WHERE Email = ?', [req.body.Email]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
