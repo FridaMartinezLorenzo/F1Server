@@ -1104,6 +1104,153 @@
                 ]
             }
         },
+        "/api/sales/getSaleByYear/{year}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Informacion de las ventas de un año en especifico de la tienda de la F1.",
+                "description": "<p>Servicio que devuelve la información de las ventas realizadas en ese año</p><p>&nbsp;</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdSale": 1,
+                                    "IdUser": 2,
+                                    "Name": "Cesar",
+                                    "LastName": "Hernadez",
+                                    "Date": "0000-00-00",
+                                    "IdProduct": 2,
+                                    "Product": "Ferrari Racing Polo - Navy - Unisex ",
+                                    "Quantity": 2
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Venta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "path",
+                        "required": true,
+                        "description": "Año en el que nos interesamos conocer las ventas",
+                        "type": "number",
+                        "default": "2020"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/sales/getSaleByMonth/{month}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Informacion de las ventas de un año en específico de la tienda de la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de las ventas en un mes específico de la tienda</p><p>&nbsp;</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdSale": 1,
+                                    "IdUser": 2,
+                                    "Name": "Cesar",
+                                    "LastName": "Hernadez",
+                                    "Date": "0000-00-00",
+                                    "IdProduct": 2,
+                                    "Product": "Ferrari Racing Polo - Navy - Unisex ",
+                                    "Quantity": 2
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Venta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "month",
+                        "in": "path",
+                        "required": true,
+                        "description": "Mes en el que nos interesamos",
+                        "type": "number",
+                        "default": "07"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/sales/getSaleByDate/{date}": {
+            "get": {
+                "tags": ["Ventas"],
+                "summary": "Informacion de las ventas de una fecha en especifico de la tienda de la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de las ventas en la fecha solicitada</p><p>&nbsp;</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdSale": 1,
+                                    "IdUser": 2,
+                                    "Name": "Cesar",
+                                    "LastName": "Hernadez",
+                                    "Date": "0000-00-00",
+                                    "IdProduct": 2,
+                                    "Product": "Ferrari Racing Polo - Navy - Unisex ",
+                                    "Quantity": 2
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Venta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "required": true,
+                        "description": "Fecha específica que nos interesa",
+                        "type": "number",
+                        "default": "2020-08-12"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
         "/api/sales/getSale/{id}": {
             "get": {
                 "tags": ["Ventas"],

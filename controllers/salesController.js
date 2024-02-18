@@ -148,5 +148,38 @@ class SalesController {
             res.json(resp);
         });
     }
+    getSaleByYear(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { year } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and YEAR(sales.Date) = ${year}`);
+            if (respuesta.length > 0) {
+                res.json(respuesta);
+                return;
+            }
+            res.json({ 'IdSale': -1, 'message': 'No sales found for this year' });
+        });
+    }
+    getSaleByMonth(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { month } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and MONTH(sales.Date) = ${month}`);
+            if (respuesta.length > 0) {
+                res.json(respuesta);
+                return;
+            }
+            res.json({ 'IdSale': -1, 'message': 'No sales found for this month' });
+        });
+    }
+    getSaleByDate(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { date } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and DATE(sales.Date) = '${date}'`);
+            if (respuesta.length > 0) {
+                res.json(respuesta);
+                return;
+            }
+            res.json({ 'IdSale': -1, 'message': 'No sales found for this date' });
+        });
+    }
 }
 exports.salesController = new SalesController();

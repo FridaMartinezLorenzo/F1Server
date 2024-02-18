@@ -16,6 +16,9 @@ class SalesRoutes {
         this.router.post('/createSaleWithCart/:id', salesController_1.salesController.createSaleWithCart);
         this.router.post('/createSaleWithoutCart/', salesController_1.salesController.createSaleWithoutCart);
         this.router.delete('/deleteSale/:id', salesController_1.salesController.deleteSale);
+        this.router.get('/getSaleByYear/:year', salesController_1.salesController.getSaleByYear);
+        this.router.get('/getSaleByMonth/:month', salesController_1.salesController.getSaleByMonth);
+        this.router.get('/getSaleByDate/:date', salesController_1.salesController.getSaleByDate);
         //this.router.put('/updateSale/:id',salesController.updateSale);
         //this.router.get('/showAllsales/',validarToken,salesController.showAllsales);
         //this.router.get('/getSale/:id',validarToken,salesController.getSale);
