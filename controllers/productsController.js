@@ -24,14 +24,14 @@ class ProductsController {
     getProductByCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE Category = ?', [id]);
+            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE IdCategory = ?', [id]);
             res.json(respuesta);
         });
     }
     getProductByTeam(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE Team = ?', [id]);
+            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE IdTeam = ?', [id]);
             res.json(respuesta);
         });
     }

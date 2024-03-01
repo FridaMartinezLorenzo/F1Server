@@ -876,7 +876,8 @@
                                     "Name": "Oracle Red Bull Racing Polo - Navy - Unisex",
                                     "PiecesInStock": 52,
                                     "Price": 50,
-                                    "IdTeam": 1
+                                    "IdTeam": 1,
+                                    "IdCategory": 4
                                 }
                             ]
                         },
@@ -922,7 +923,8 @@
                                     "Name": "Oracle Red Bull Racing Polo - Navy - Unisex",
                                     "PiecesInStock": 52,
                                     "Price": 50,
-                                    "IdTeam": 1
+                                    "IdTeam": 1,
+                                    "IdCategory": 4
                                 }
                             ]
                         },
@@ -968,7 +970,8 @@
                                     "Name": "Oracle Red Bull Racing Polo - Navy - Unisex",
                                     "PiecesInStock": 52,
                                     "Price": 50,
-                                    "IdTeam": 1
+                                    "IdTeam": 1,
+                                    "IdCategory": 4
                                 }
                             ]
                         },
@@ -2716,6 +2719,10 @@
                 "IdTeam": {
                     "type": "number",
                     "description": "Codigo que permite identificar la escuderia a la que pertenece el piloto"
+                },
+                "IdCategory": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar la categoria a la que pertenece el producto"
                 }
             }
         },
