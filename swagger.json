@@ -861,6 +861,98 @@
                 ]
             }
         },
+        "/api/products/getProductByCategory/{id}": {
+            "get": {
+                "tags": ["Productos"],
+                "summary": "Listado de los productos de una categoria.",
+                "description": "<p>Servicio que devuelve el listado de productos de una categoria en específico</p><p>&nbsp;</p><p><em><strong>¿Cuáles son los producto asociados a esta categoria?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdProduct": 1,
+                                    "Name": "Oracle Red Bull Racing Polo - Navy - Unisex",
+                                    "PiecesInStock": 52,
+                                    "Price": 50,
+                                    "IdTeam": 1
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Producto"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la categoria",
+                        "type": "number",
+                        "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/products/getProductByTeam/{id}": {
+            "get": {
+                "tags": ["Productos"],
+                "summary": "Listado de productos de una escudería específica.",
+                "description": "<p>Servicio que devuelve una lista de los productos pertenecientes a una escudería en específico</p><p>&nbsp;</p><p><em><strong>¿Cuáles son los productos asociado a esta escudería?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdProduct": 1,
+                                    "Name": "Oracle Red Bull Racing Polo - Navy - Unisex",
+                                    "PiecesInStock": 52,
+                                    "Price": 50,
+                                    "IdTeam": 1
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Producto"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la escuderia",
+                        "type": "number",
+                        "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
         "/api/products/getProduct/{id}": {
             "get": {
                 "tags": ["Productos"],

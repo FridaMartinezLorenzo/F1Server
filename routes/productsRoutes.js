@@ -9,6 +9,8 @@ class ProductsRoutes {
     }
     config() {
         this.router.get('/showAllproducts/', productsController_1.productsController.showAllproducts);
+        this.router.get('/getProductByCategory/:id', productsController_1.productsController.getProductByCategory); //Category{MEN, WOMEN, KIDS}
+        this.router.get('/getProductByTeam/:id', productsController_1.productsController.getProductByTeam);
         this.router.get('/getProduct/:id', productsController_1.productsController.getProduct);
         this.router.post('/createProduct/', productsController_1.productsController.createProduct);
         this.router.put('/updateProduct/:id', productsController_1.productsController.updateProduct);

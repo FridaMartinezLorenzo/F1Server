@@ -21,6 +21,20 @@ class ProductsController {
             res.json(respuesta);
         });
     }
+    getProductByCategory(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE Category = ?', [id]);
+            res.json(respuesta);
+        });
+    }
+    getProductByTeam(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM products WHERE Team = ?', [id]);
+            res.json(respuesta);
+        });
+    }
     getProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -49,8 +63,14 @@ class ProductsController {
     addStock(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const stock = yield database_1.default.query("SELECT products.PiecesInStock FROM products WHERE IdProduct = ?", [id]); //stock actual en la base de datos
             const resp = yield database_1.default.query("UPDATE products set PiecesInStock = PiecesInStock + ?  WHERE IdProduct = ?", [req.body.PiecesInStock, id]);
+            res.json(resp);
+        });
+    }
+    ajustStock(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const resp = yield database_1.default.query("UPDATE products set PiecesInStock = ?  WHERE IdProduct = ?", [req.body.PiecesInStock, id]);
             res.json(resp);
         });
     }
