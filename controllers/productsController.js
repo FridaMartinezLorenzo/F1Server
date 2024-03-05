@@ -35,6 +35,12 @@ class ProductsController {
             res.json(respuesta);
         });
     }
+    getCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const respuesta = yield database_1.default.query('SELECT * FROM categories');
+            res.json(respuesta);
+        });
+    }
     getProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;

@@ -16,6 +16,7 @@ class ProductsRoutes {
         this.router.put('/updateProduct/:id', productsController_1.productsController.updateProduct);
         this.router.put('/addStock/:id', productsController_1.productsController.addStock);
         this.router.delete('/deleteProduct/:id', productsController_1.productsController.deleteProduct);
+        this.router.get('/getCategories/', productsController_1.productsController.getCategories);
         //this.router.get('/showAllproducts/',validarToken,productsController.showAllproducts);
         //this.router.get('/getProduct/:id',validarToken,productsController.getProduct);
         //this.router.post('/createProduct/',validarToken,productsController.createProduct);
