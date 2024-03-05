@@ -37,7 +37,7 @@ class ProductsController {
     }
     getCategories(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM categories');
+            const respuesta = yield database_1.default.query('SELECT * FROM pcategory');
             res.json(respuesta);
         });
     }
