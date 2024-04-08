@@ -97,12 +97,18 @@ class ShoppingcartsController {
     }
     addItemToShoppingCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const respCart_User = yield database_1.default.query("SELECT IdCart FROM cart_user WHERE IdUser = ?", [id]);
-            const IdCart = respCart_User[0].IdCart;
-            const addItem = { "IdCart": IdCart, "IdProduct": req.body.IdProduct, "Quantity": req.body.Quantity };
-            const resp = yield database_1.default.query("INSERT INTO cart_product set ?", [addItem]);
-            res.json(resp);
+            try {
+                const { id } = req.params;
+                const respCart_User = yield database_1.default.query("SELECT IdCart FROM cart_user WHERE IdUser = ?", [id]);
+                const IdCart = respCart_User[0].IdCart;
+                const addItem = { "IdCart": IdCart, "IdProduct": req.body.IdProduct, "Quantity": req.body.Quantity };
+                const resp = yield database_1.default.query("INSERT INTO cart_product set ?", [addItem]);
+                res.json(resp);
+            }
+            catch (error) {
+                console.error("Error adding item to shopping cart:", error);
+                res.status(500).json({ error: "An error occurred while adding the item to the shopping cart." });
+            }
         });
     }
     deleteShoppingcart(req, res) {
@@ -134,31 +140,22 @@ class ShoppingcartsController {
     }
     addItemToShoppingCartEmail(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { token } = req.params;
-                const decoded = decodeJWT(token); // Asegúrate de que esta función devuelva el campo correcto, como el correo electrónico del usuario.
-                const [exist] = yield database_1.default.query("SELECT * FROM users WHERE Email = ?", [decoded]); // Asumiendo que decoded.email contiene el correo electrónico.
-                if (exist.length == 0) {
-                    res.json({ IdUser: -1 });
-                    return;
-                }
-                else {
-                    const id = exist[0].IdUser; // Accediendo al primer elemento del resultado para obtener IdUser.
-                    const [respCart_User] = yield database_1.default.query("SELECT IdCart FROM cart_user WHERE IdUser = ?", [id]);
-                    if (respCart_User.length == 0) {
-                        res.status(404).json({ message: "Cart not found for the user." });
-                        return;
-                    }
-                    const IdCart = respCart_User[0].IdCart;
-                    const addItem = { "IdCart": IdCart, "IdProduct": req.body.IdProduct, "Quantity": 1 };
-                    const resp = yield database_1.default.query("INSERT INTO cart_product SET ?", [addItem]);
-                    res.json({ message: 'Item added to shopping cart successfully', resp });
-                }
+            const { token } = req.params;
+            const decoded = decodeJWT(token);
+            const decodedObj = JSON.parse(decoded);
+            const correo = decodedObj.correo;
+            const exist = yield database_1.default.query("SELECT * FROM users WHERE Email = ?", [correo]);
+            const id = exist[0].IdUser; // Accediendo al primer elemento del resultado para obtener IdUser.
+            const [respCart] = yield database_1.default.query("SELECT *  FROM cart_user WHERE IdUser = ?", [id]);
+            console.log("idcarrito", respCart.IdCart);
+            if (respCart.length == 0) {
+                res.status(404).json({ message: "Cart not found for the user." });
+                return;
             }
-            catch (error) {
-                console.error("Error adding item to shopping cart:", error);
-                res.status(500).json({ error: "An error occurred while adding the item to the shopping cart." });
-            }
+            const IdCart = respCart.IdCart;
+            const addItem = { "IdCart": IdCart, "IdProduct": req.body.IdProduct, "Quantity": 1 };
+            const resp = yield database_1.default.query("INSERT INTO cart_product SET ?", [addItem]);
+            res.json({ message: 'Item added to shopping cart successfully', resp });
         });
     }
 }

@@ -26,7 +26,8 @@ function sendEmailOffers(body) {
         }
     });
     // Tokenizar el correo electrónico
-    const emailToken = jsonwebtoken_1.default.sign({ email: body.email }, process.env.JWT_SECRET || 'secret');
+    var correo = body.Email;
+    const emailToken = jsonwebtoken_1.default.sign({ correo }, process.env.TOKEN_SECRET || 'prueba', { noTimestamp: true });
     console.log("correo tokenizado", emailToken);
     // Construir la lista de nombres de productos uwu
     let productListWithLinks = '';
