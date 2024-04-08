@@ -30,7 +30,7 @@ function sendEmail(body) {
             { data: `
             <h1>Hi, we detected that you want to change your password</h1>
             <p>Click the following link to change your password:</p>
-            <a href="http://localhost:4200/resetPassword/${token}">Click here<a/>`, alternative: true }
+            <a href="http://f1cliente.s3-website-us-east-1.amazonaws.com/resetPassword/${token}">Click here<a/>`, alternative: true }
         ]
     };
     var result = { "Success": 1 };

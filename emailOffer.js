@@ -32,7 +32,7 @@ function sendEmailOffers(body) {
     // Construir la lista de nombres de productos uwu
     let productListWithLinks = '';
     body.Products.forEach((product) => {
-        const link = `<a href="http://localhost:4200/home/store/shoppingcart/${emailToken}/${body.id}/${product.IdProduct}">Click here</a>`;
+        const link = `<a href="http://f1cliente.s3-website-us-east-1.amazonaws.com/home/store/shoppingcart/${emailToken}/${body.id}/${product.IdProduct}">Click here</a>`;
         productListWithLinks += `<li>${product.Name}: ${link}</li>`;
     });
     var message = {
