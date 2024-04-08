@@ -54,6 +54,9 @@ function sendEmailOffers(body) {
             </ul>
            <!-- Este es un comentario en HTML. 
            <a href="http://localhost:4200/home/store/shoppingcart/${emailToken}/${body.id}">Click here<a/> -->
+           <br>
+           <br>
+              <p>Thank you for choosing us, this offer is while supplies last.</p>
            `, alternative: true
             }
         ]
