@@ -9,7 +9,7 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "host": "13.58.63.54",
+    "host": "localhost:3000",
     "basePath": "",
     "tags": [
         {
@@ -43,6 +43,10 @@
         {
             "name": "CarritosCompras",
             "description": "API para obtener información de los carritos de compras de la tienda de la F1"
+        },
+        {
+            "name": "Ofertas",
+            "description": "API para obtener información de las ofertas de la tienda de la F1"
         }
     ],
     "schemes": ["http"],
@@ -1158,6 +1162,41 @@
                 ]
             }
         },
+        "/api/products/getCategories/": {
+            "get": {
+                "tags": ["Productos"],
+                "summary": "Listado de todas las categorias de productos de la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de todas las categorias de productos de la F1.</p><p>&nbsp;</p><p><em><strong>¿Cuáles son las categorias existentes en la F1?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdCategory": 1,
+                                    "Name": "Polo"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Categorias"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
         "/api/sales/showAllSales/": {
             "get": {
                 "tags": ["Ventas"],
@@ -1176,7 +1215,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1217,7 +1257,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1266,7 +1307,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1315,7 +1357,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1364,7 +1407,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1413,7 +1457,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1462,7 +1507,8 @@
                                     "Date": "0000-00-00",
                                     "IdProduct": 2,
                                     "Product": "Ferrari Racing Polo - Navy - Unisex ",
-                                    "Quantity": 2
+                                    "Quantity": 2,
+                                    "State": 2
                                 }
                             ]
                         },
@@ -1491,6 +1537,50 @@
                         "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
                     }
                 ]
+            }
+        },
+        "/api/sales/updateStateSale/{id}": {
+            "put": {
+                "summary": "Actualizar el estado de una venta de la tienda de la F1.",
+                "description": "<p>Servicio que permite editar el estado de una venta, para actualizar que ha sido entregada, dado el id de la venta </p><p>&nbsp;</p>",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la venta",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "name": "Estado",
+                        "in": "body",
+                        "description": "Estado al que pasa",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EstadoVenta"
+                        }
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ],
+                "tags": ["Ventas"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
             }
         },
         "/api/sales/getTotalSale/{id}": {
@@ -2065,19 +2155,19 @@
                 }
             }
         },
-        "/api/users/updateUserPassword/{id}": {
+        "/api/users/updateUserPassword/{token}": {
             "put": {
                 "summary": "Actualizar la contraseña del usuario de la F1.",
-                "description": "<p>Servicio que permite editar la contraseña de un usuario de la F1, dado el id el mismo </p><p>&nbsp;</p>",
+                "description": "<p>Servicio que permite editar la contraseña de un usuario de la F1, dado el correo tokenizado de un usuario</p><p>&nbsp;</p>",
                 "operationId": "update",
                 "consumes": ["application/json"],
                 "produces": ["application/json"],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "token",
                         "in": "path",
                         "required": true,
-                        "description": "Identificador del usuario",
+                        "description": "Correo tokenizado del usuario",
                         "type": "number",
                         "default": "1"
                     },
@@ -2235,15 +2325,6 @@
                         "description": "Identificador del usuario a quien pertenece el carrito",
                         "type": "number",
                         "default": "1"
-                    },
-                    {
-                        "name": "CarritoCompras",
-                        "in": "body",
-                        "description": "Arreglo de productos que se desean agregar al carrito",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ProductosCarrito"
-                        }
                     }
                 ],
                 "tags": ["CarritosCompras"],
@@ -2300,7 +2381,54 @@
                     }
                 }
             }
-        }, "/api/shoppingcarts/updateItemQuantityShoppingCart/{id}": {
+        },
+        "/api/shoppingcarts/verifyStockOfProducts/{id}": {
+            "get": {
+                "summary": "Verificar que hay stock suficiente de los productos.",
+                "description": "<p>Servicio que permite verificar que hay suficiente stock para los productos en el carrito de un usuario</p><p>&nbsp;</p>",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador del usuario",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ],
+                "tags": ["CarritosCompras"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdCart": 6,
+                                    "AllInStock": 1,
+                                    "message": "All products are avialable"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/AllProductsInStock"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/shoppingcarts/updateItemQuantityShoppingCart/{id}": {
             "put": {
                 "summary": "Actualizar la cantidad de un producto del carrito.",
                 "description": "<p>Servicio que permite editar la cantidad del productos que el usuario desea agregar en su carrito de un producto en específico </p><p>&nbsp;</p>",
@@ -2363,6 +2491,46 @@
                         "in": "path",
                         "required": true,
                         "description": "Identificador del usuario",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/shoppingcarts/deleteItemFromShoppingcart/{idUser}/{idProduct}": {
+            "delete": {
+                "tags": ["CarritosCompras"],
+                "summary": "Eliminar un producto del carrito de compras de la F1.",
+                "description": "<p>Servicio que elimina un producto del carrito de compras dado el identificador del usuario al que pertenece el carrito</p><p>&nbsp;</p><p><em><strong>¿Fué una ejecución exitosa?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idUser",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador del usuario",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "name": "idProduct",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador del producto que se desea eliminar del carrito",
                         "type": "number",
                         "default": "1"
                     },
@@ -2553,6 +2721,352 @@
                         "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
                     }
                 ]
+            }
+        },
+        "/api/offers/showAllOffers/": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Listado de todas las ofertas registradas en el sistema de la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de todas las ofertas registradas en el sistema de  la F1.</p><p>&nbsp;</p><p><em><strong>¿Cuáles son las ofertas registradas en el sistema de la F1?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdOffer": 1,
+                                    "PercentDiscount": 3,
+                                    "TypeofOffer": 4,
+                                    "IdGuia": 10
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Ofertas"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [{
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }]
+            }
+        },
+        "/api/offers/getOffer/{id}": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Informacion sobre una oferta en específico registrada en la F1.",
+                "description": "<p>Servicio que devuelve la información detallada de una oferta en específico registrada en el sistema de la F1</p><p>&nbsp;</p><p><em><strong>¿Cuál es la oferta asociada a este id?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdOffer": 1,
+                                    "PercentDiscount": 3,
+                                    "TypeofOffer": 4,
+                                    "IdGuia": 10
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Oferta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador de la oferta del que se necesita saber la información contenida en el sitema de la F1",
+                        "type": "number",
+                        "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/offers/verifyOfferDuration/{id}": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Es una oferta es o no valida en el momento",
+                "description": "<p>Servicio que devuelve si una oferta es valida o no, 1 si lo es, -1 si no lo es</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "message": "Offer is active",
+                                    "active": "1"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Mensaje que indica si la oferta es valida o no"
+                                },
+                                "active": {
+                                    "type": "number",
+                                    "description": "1 si la oferta es valida, -1 si no lo es, bandera que indica si la oferta es valida o no"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador de la oferta del que se necesita saber la información contenida en el sitema de la F1",
+                        "type": "number",
+                        "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/offers/createOffer": {
+            "post": {
+                "summary": "Creando una oferta ",
+                "operationId": "create",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "Oferta",
+                        "in": "body",
+                        "description": "Oferta que se desea agregar",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NuevaOferta"
+                        }
+                    }
+                ],
+                "tags": ["Ofertas"],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/offers/updateOffer/{id}": {
+            "put": {
+                "summary": "Actualizar la informacion de una oferta en el sistema de la F1.",
+                "description": "<p>Servicio que permite editar la información asociada al identificador de la oferta que se encuentra almacenada en el sistema de la F1 </p><p>&nbsp;</p>",
+                "operationId": "update",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la oferta",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "name": "Oferta",
+                        "in": "body",
+                        "description": "Nueva oferta",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NuevaOferta"
+                        }
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ],
+                "tags": ["Ofertas"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/offers/deleteOffer/{id}": {
+            "delete": {
+                "tags": ["Ofertas"],
+                "summary": "Eliminar una oferta del sistema de la F1.",
+                "description": "<p>Servicio que elimina una oferta dado su identificador del sistema de la F1</p><p>&nbsp;</p><p><em><strong>¿Fué una ejecución exitosa?</strong></em></p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la oferta a eliminar",
+                        "type": "number",
+                        "default": "1"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/offers/showTypeOffers/": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Listado de todos los tipo de oferta",
+                "description": "<p>Servicio que devuelve la información de todos los tipos de oferta</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdOffer": 1,
+                                    "Name": "TipoOferta1"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/TipoOfertas"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [{
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }]
+            }
+        },
+        "/api/offers/getTypeOffer/{id} ": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Informacion sobre un tipo de oferta en específico.",
+                "description": "<p>Servicio que devuelve la información detallada de un tipo de oferta en específico</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdOffer": 1,
+                                    "Name": "TipoOferta1"
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/TipoOferta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador del tipo de oferta del que se necesita saber la información contenida en el sitema de la F1",
+                        "type": "number",
+                        "default": "2"
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }
+                ]
+            }
+        },
+        "/api/offers/showNewPrices": {
+            "get": {
+                "tags": ["Ofertas"],
+                "summary": "Listado de todos los productos con sus nuevos precios",
+                "description": "<p>Servicio que devuelve la información de todos los productos con sus nuevos precios</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "IdProduct": 1,
+                                    "Name": "Nombre",
+                                    "NewPrice": 3
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/NuevoPrecio"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [{
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
+                    }]
             }
         }
     },
@@ -2835,6 +3349,15 @@
                 }
             }
         },
+        "EstadoVenta": {
+            "type": "object",
+            "properties": {
+                "State": {
+                    "type": "number",
+                    "description": "Estado al que paso la venta"
+                }
+            }
+        },
         "Circuito": {
             "type": "object",
             "properties": {
@@ -3048,6 +3571,23 @@
                 "$ref": "#/definitions/ProductoCarrito"
             }
         },
+        "AllProductsInStock": {
+            "type": "object",
+            "properties": {
+                "IdCart": {
+                    "type": "number",
+                    "description": "Codigo de identificacion del carrito de compras"
+                },
+                "AllInStock": {
+                    "type": "number",
+                    "description": "Cantidad de productos"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Mensaje que indica si hay suficiente stock"
+                }
+            }
+        },
         "Pais": {
             "type": "object",
             "properties": {
@@ -3073,6 +3613,86 @@
                 "Name": {
                     "type": "string",
                     "description": "Nombre del pais"
+                }
+            }
+        },
+        "Oferta": {
+            "type": "object",
+            "properties": {
+                "IdOffer": {
+                    "type": "number",
+                    "description": "Codigo de identificacion de la oferta"
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "Nombre de la oferta"
+                },
+                "PercentDiscount": {
+                    "type": "number",
+                    "description": "Porcentaje de descuento de la oferta"
+                },
+                "IdTeam": {
+                    "type": "number",
+                    "description": "Id del equipo"
+                }
+            }
+        },
+        "NuevaOferta": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "description": "Nombre de la oferta"
+                },
+                "PercentDiscount": {
+                    "type": "number",
+                    "description": "Porcentaje de descuento de la oferta"
+                },
+                "DateStart": {
+                    "type": "string",
+                    "description": "Fecha de inicio de la oferta"
+                },
+                "DateEnd": {
+                    "type": "string",
+                    "description": "Fecha de finalizacion de la oferta"
+                },
+                "Products": {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "description": "Identificador del producto que estan en oferta"
+                    },
+                    "description": "Lista de identificadores de los productos que estan en oferta"
+                }
+            }
+        },
+        "TipoOferta": {
+            "type": "object",
+            "properties": {
+                "IdTypeOffer": {
+                    "type": "number",
+                    "description": "Codigo de identificacion del tipo de oferta"
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "Nombre del tipo de oferta"
+                }
+            }
+        },
+        "NuevoPrecio": {
+            "type": "object",
+            "properties": {
+                "IdProduct": {
+                    "type": "number",
+                    "description": "Id del producto"
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                },
+                "NewPrice": {
+                    "type": "number",
+                    "description": "Nuevo precio del producto"
                 }
             }
         }

@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database")); //acceso a la base d
 class SalesController {
     showAllsales(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;');
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity, State FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;');
             res.json(respuesta);
         });
     }
     getSale(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = ? and sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity, State FROM sales,sales_products, products, users where sales.IdSale = ? and sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct;', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
             }
@@ -34,7 +34,7 @@ class SalesController {
     getSaleByUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and users.IdUser = ?;', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale, users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity, State FROM sales,sales_products, products, users where sales.IdSale = sales_products.IdSale and sales.IdUser = users.IdUser and products.IdProduct = sales_products.IdProduct and users.IdUser = ?;', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
                 return;
@@ -46,12 +46,24 @@ class SalesController {
     getSaleByProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT sales.IdSale,users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity FROM sales,sales_products, products, users WHERE products.IdProduct = ? and sales_products.IdSale = sales.IdSale', [id]);
+            const respuesta = yield database_1.default.query('SELECT sales.IdSale,users.IdUser, users.Name, users.LastName, Date,products.IdProduct, products.Name as Product, Quantity, State FROM sales,sales_products, products, users WHERE products.IdProduct = ? and sales_products.IdSale = sales.IdSale', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta);
                 return;
             }
             res.status(404).json({ 'message': 'Sale not found' });
+        });
+    }
+    updateStateSale(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM sales WHERE IdSale = ?', [id]);
+            if (respuesta.length > 0) {
+                const resp = yield database_1.default.query('UPDATE sales set State = ? WHERE IdSale = ?', [req.body.State, id]);
+                res.json(resp);
+                return;
+            }
+            res.json({ 'IdSale': -1, 'message': 'Sale not found' });
         });
     }
     getTotalSale(req, res) {

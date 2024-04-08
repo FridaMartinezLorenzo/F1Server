@@ -29,6 +29,7 @@ class UsersRoutes {
         this.router.post('/verifyUser/', usersController_1.usersController.verifyUser);
         this.router.post('/verifyAdmin/', usersController_1.usersController.verifyAdmin);
         this.router.post('/getUserByEmail/', usersController_1.usersController.getUserEmail);
+        this.router.put('/updateUserPasswordT/:token', usersController_1.usersController.updatePasswordT);
     }
 }
 const usersRoutes = new UsersRoutes();

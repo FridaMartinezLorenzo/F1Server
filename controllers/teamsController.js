@@ -48,9 +48,16 @@ class TeamsController {
     }
     deleteTeam(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM teams WHERE IdTeam = ${id}`);
-            res.json(resp);
+            try {
+                const { id } = req.params;
+                const resp_teams = yield database_1.default.query(`DELETE FROM teams WHERE IdTeam = ${id}`);
+                const resp_drivers = yield database_1.default.query(`DELETE FROM drivers WHERE IdTeam = ${id}`);
+                const resp_products = yield database_1.default.query('DELETE FROM products WHERE IdTeam = ?', [id]);
+                res.json(resp_teams);
+            }
+            catch (error) {
+                res.status(500).json({ error: error });
+            }
         });
     }
 }

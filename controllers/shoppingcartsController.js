@@ -27,7 +27,7 @@ class ShoppingcartsController {
             const gettingIdCart = yield database_1.default.query('SELECT IdCart FROM cart_user WHERE IdUser = ?', [id]);
             if (gettingIdCart.length > 0) {
                 const IdCart = gettingIdCart[0].IdCart;
-                const respuesta = yield database_1.default.query('SELECT cart_product.IdCart, cart_product.IdProduct, cart_product.Quantity FROM cart_user,cart_product WHERE cart_product.IdCart = ?;', [IdCart]);
+                const respuesta = yield database_1.default.query('SELECT cart_product.IdCart, cart_product.IdProduct, cart_product.Quantity FROM cart_user,cart_product WHERE cart_product.IdCart = ? and cart_user.IdCart = cart_product.IdCart;', [IdCart]);
                 if (respuesta.length > 0) {
                     res.json(respuesta);
                     return;
@@ -63,6 +63,38 @@ class ShoppingcartsController {
             res.json(resp);
         });
     }
+    verifyStockOfProducts(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const respCart_User = yield database_1.default.query("SELECT IdCart FROM cart_user WHERE IdUser = ?", [id]);
+            if (respCart_User.length > 0) {
+                const IdCart = respCart_User[0].IdCart;
+                const cart = yield database_1.default.query('SELECT cart_product.IdCart, cart_product.IdProduct, cart_product.Quantity FROM cart_user,cart_product WHERE cart_product.IdCart = ? and cart_user.IdCart = cart_product.IdCart;', [IdCart]);
+                if (cart.length > 0) {
+                    const nproduct = req.body.length;
+                    let resFinal = [];
+                    for (let i = 0; i < nproduct; i++) {
+                        //Obtenemos el sotck de cada producto
+                        const stock = yield database_1.default.query('SELECT Stock FROM product WHERE IdProduct = ?', [req.body[i].IdProduct]);
+                        //Si el stock es menor a la cantidad que se quiere comprar, se añade a la respuesta final
+                        if (stock[0].Stock < req.body[i].Quantity) {
+                            resFinal.push({ IdProduct: req.body[i].IdProduct, Stock: stock[0].Stock }); //Guardamos el stock del maximo que se puede comprar
+                        }
+                    }
+                    if (resFinal.length > 0) {
+                        res.json(resFinal);
+                    }
+                    else {
+                        res.json({ message: "All products are available", IdCart: IdCart, AllInStock: 1 });
+                        return;
+                    }
+                }
+            }
+            else {
+                res.json({ message: "The user does not have a shopping cart", IdCart: -1 });
+            }
+        });
+    }
     addItemToShoppingCart(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -78,11 +110,59 @@ class ShoppingcartsController {
             const { id } = req.params;
             const gettingIdCart = yield database_1.default.query('SELECT IdCart FROM cart_user WHERE IdUser = ?', [id]);
             console.log(gettingIdCart);
-            const IdCart = gettingIdCart[0].IdCart;
-            const resp = yield database_1.default.query(`DELETE FROM cart_user WHERE IdUser = ${id}`);
-            const resp2 = yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${IdCart}`);
-            res.json(resp);
+            if (gettingIdCart.length > 0) {
+                const IdCart = gettingIdCart[0].IdCart;
+                const resp = yield database_1.default.query(`DELETE FROM cart_user WHERE IdUser = ${id}`);
+                const resp2 = yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${IdCart}`);
+                res.json(resp);
+            }
+            else {
+                res.json({ message: "The user does not have a shopping cart", IdCart: -1 });
+            }
         });
     }
+    deleteItemFromShoppingcart(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idUser, idProduct } = req.params;
+            const gettingIdCart = yield database_1.default.query('SELECT IdCart FROM cart_user WHERE IdUser = ?', [idUser]);
+            if (gettingIdCart.length > 0) {
+                const IdCart = gettingIdCart[0].IdCart;
+                const resp = yield database_1.default.query(`DELETE FROM cart_product WHERE IdCart = ${IdCart} and IdProduct = ${idProduct}`);
+                res.json(resp);
+            }
+        });
+    }
+    addItemToShoppingCartEmail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { token } = req.params;
+                const decoded = decodeJWT(token); // Asegúrate de que esta función devuelva el campo correcto, como el correo electrónico del usuario.
+                const [exist] = yield database_1.default.query("SELECT * FROM users WHERE Email = ?", [decoded]); // Asumiendo que decoded.email contiene el correo electrónico.
+                if (exist.length == 0) {
+                    res.json({ IdUser: -1 });
+                    return;
+                }
+                else {
+                    const id = exist[0].IdUser; // Accediendo al primer elemento del resultado para obtener IdUser.
+                    const [respCart_User] = yield database_1.default.query("SELECT IdCart FROM cart_user WHERE IdUser = ?", [id]);
+                    if (respCart_User.length == 0) {
+                        res.status(404).json({ message: "Cart not found for the user." });
+                        return;
+                    }
+                    const IdCart = respCart_User[0].IdCart;
+                    const addItem = { "IdCart": IdCart, "IdProduct": req.body.IdProduct, "Quantity": 1 };
+                    const resp = yield database_1.default.query("INSERT INTO cart_product SET ?", [addItem]);
+                    res.json({ message: 'Item added to shopping cart successfully', resp });
+                }
+            }
+            catch (error) {
+                console.error("Error adding item to shopping cart:", error);
+                res.status(500).json({ error: "An error occurred while adding the item to the shopping cart." });
+            }
+        });
+    }
+}
+function decodeJWT(token) {
+    return (Buffer.from(token.split('.')[1], 'base64').toString());
 }
 exports.shoppingcartsController = new ShoppingcartsController();

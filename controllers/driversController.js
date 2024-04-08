@@ -17,7 +17,7 @@ const database_1 = __importDefault(require("../database")); //acceso a la base d
 class DriversController {
     showAlldrivers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM drivers');
+            const respuesta = yield database_1.default.query('SELECT * FROM drivers ORDER BY Points DESC;');
             res.json(respuesta);
         });
     }

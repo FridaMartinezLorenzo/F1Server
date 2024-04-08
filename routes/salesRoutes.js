@@ -13,6 +13,7 @@ class SalesRoutes {
         this.router.get('/getSaleByUser/:id', salesController_1.salesController.getSaleByUser);
         this.router.get('/getSaleByProduct/:id', salesController_1.salesController.getSaleByProduct);
         this.router.get('/getTotalSale/:id', salesController_1.salesController.getTotalSale);
+        this.router.put('/updateStateSale/:id', salesController_1.salesController.updateStateSale);
         this.router.post('/createSaleWithCart/:id', salesController_1.salesController.createSaleWithCart);
         this.router.post('/createSaleWithoutCart/', salesController_1.salesController.createSaleWithoutCart);
         this.router.delete('/deleteSale/:id', salesController_1.salesController.deleteSale);

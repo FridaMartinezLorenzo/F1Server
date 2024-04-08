@@ -11,6 +11,7 @@ const gpRoutes_1 = __importDefault(require("./routes/gpRoutes"));
 const productsRoutes_1 = __importDefault(require("./routes/productsRoutes"));
 const salesRoutes_1 = __importDefault(require("./routes/salesRoutes"));
 const circuitsRoutes_1 = __importDefault(require("./routes/circuitsRoutes"));
+const offersRoutes_1 = __importDefault(require("./routes/offersRoutes"));
 const usersRoutes_1 = __importDefault(require("./routes/usersRoutes"));
 const shoppingcartsRoutes_1 = __importDefault(require("./routes/shoppingcartsRoutes"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -41,6 +42,7 @@ class Server {
         this.app.use('/api/sales', salesRoutes_1.default);
         this.app.use('/api/users', usersRoutes_1.default);
         this.app.use('/api/shoppingcarts', shoppingcartsRoutes_1.default);
+        this.app.use('/api/offers', offersRoutes_1.default);
         //this.app.use('/api/address', adressRoutes);
     }
     start() {
