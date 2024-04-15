@@ -2868,8 +2868,15 @@
                         "description": "Oferta que se desea agregar",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/NuevaOferta"
+                            "$ref": "#/definitions/NuevaOfertaC"
                         }
+                    },
+                    {
+                        "description": "apiKey",
+                        "type": "string",
+                        "in": "header",
+                        "name": "bearer",
+                        "default": "eyJhbGciOiJIUzI1NiJ9.ZXJpa3VlQGdtYWlsLmNvbQ.v7atXtnZ9F14ahwqCSjYKQirsvjs5aWQ4MrPz-BCBSk"
                     }
                 ],
                 "tags": ["Ofertas"],
@@ -3634,6 +3641,34 @@
                 "IdTeam": {
                     "type": "number",
                     "description": "Id del equipo"
+                }
+            }
+        },
+        "NuevaOfertaC": {
+            "type": "object",
+            "properties": {
+                "offerData": {
+                    "type": "object",
+                    "properties": {
+                        "Name": {
+                            "type": "string",
+                            "description": "Nombre de la oferta."
+                        },
+                        "PercentDiscount": {
+                            "type": "number",
+                            "description": "Porcentaje de descuento de la oferta."
+                        },
+                        "DateStart": {
+                            "type": "string",
+                            "description": "Fecha de inicio de la oferta"
+                        },
+                        "DateEnd": {
+                            "type": "string",
+                            "description": "Fecha de finalizacion de la oferta"
+                        }
+                    },
+                    "required": ["Name", "PercentDiscount", "DateStart", "DateEnd"],
+                    "description": "Datos de la oferta."
                 }
             }
         },

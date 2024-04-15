@@ -34,7 +34,8 @@ class CountriesController {
     }
     createCountry(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO countries set ?", [req.body]);
+            const { Name, Nombre } = req.body;
+            const resp = yield database_1.default.query("INSERT INTO countries (Name, Nombre) VALUES (?, ?)", [Name, Nombre]);
             res.json(resp);
         });
     }
@@ -48,9 +49,16 @@ class CountriesController {
     }
     deleteCountry(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM countries WHERE IdCountry = ${id}`);
-            res.json(resp);
+            try {
+                const { id } = req.params;
+                const resp_drivers = yield database_1.default.query(`DELETE FROM drivers WHERE IdCountry = ${id}`);
+                const resp_gp = yield database_1.default.query(`DELETE FROM gp WHERE IdCountry = ${id}`);
+                const resp = yield database_1.default.query(`DELETE FROM countries WHERE IdCountry = ${id}`);
+                res.json(resp);
+            }
+            catch (error) {
+                res.status(500).json({ error: error });
+            }
         });
     }
 }

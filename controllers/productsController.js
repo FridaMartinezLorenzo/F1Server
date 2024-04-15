@@ -89,9 +89,16 @@ class ProductsController {
     }
     deleteProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM products WHERE IdProduct = ${id}`);
-            res.json(resp);
+            try {
+                const { id } = req.params;
+                const resp_sales_products = yield database_1.default.query(`DELETE FROM sales_products WHERE IdProduct = ${id}`);
+                const resp_sales = yield database_1.default.query(`DELETE FROM sales WHERE IdSale NOT IN (SELECT DISTINCT IdSale FROM sales_products)`);
+                const resp = yield database_1.default.query(`DELETE FROM products WHERE IdProduct = ${id}`);
+                res.json(resp);
+            }
+            catch (error) {
+                res.status(500).json({ error: error });
+            }
         });
     }
 }

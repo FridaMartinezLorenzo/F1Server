@@ -38,8 +38,8 @@ class OffersController {
             const DateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
             try {
                 const { offerData, Idproducts } = req.body;
-                const { Name, PercentDiscount, DateStart, DateEnd } = offerData;
-                const response = yield database_1.default.query("INSERT INTO offers (Name, PercentDiscount, DateStart,DateEnd) VALUES (?, ?, ?,?)", [Name, PercentDiscount, DateStart, DateEnd]);
+                const { Name, Nombre, PercentDiscount, DateStart, DateEnd } = offerData;
+                const response = yield database_1.default.query("INSERT INTO offers (Name, Nombre, PercentDiscount, DateStart,DateEnd) VALUES (?, ?, ?, ?, ?)", [Name, Nombre, PercentDiscount, DateStart, DateEnd]);
                 const offerId = response.insertId;
                 if (Idproducts && Idproducts.length > 0) {
                     const insertProductsPromises = Idproducts.map((idproduct) => {
@@ -65,12 +65,13 @@ class OffersController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const { Name, PercentDiscount, DateStart, DateEnd, Products } = req.body;
+                const { Name, Nombre, PercentDiscount, DateStart, DateEnd, Products } = req.body;
                 const DateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
                 console.log('DateNow:', DateNow);
                 //Hacemos el json de lo que se va a actualizar
                 const updatedOffer = {
                     Name,
+                    Nombre,
                     PercentDiscount,
                     DateStart,
                     DateEnd

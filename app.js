@@ -20,6 +20,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = __importDefault(require("./database"));
 const emailAccess = require('./emailAccess');
 const emailOffer = require('./emailOffer');
+const fs_1 = __importDefault(require("fs"));
 class Server {
     constructor() {
         this.queryUsuario = (decodificado) => {
@@ -36,6 +37,7 @@ class Server {
         this.app = (0, express_1.default)();
         this.config();
         this.routes();
+        this.app.use(express_1.default.static(__dirname + "/Images"));
     }
     config() {
         this.app.use(express_1.default.urlencoded({ limit: '50mb', parameterLimit: 100000, extended: false }));
@@ -46,6 +48,18 @@ class Server {
         this.app.use(express_1.default.urlencoded({ extended: false }));
     }
     routes() {
+        ///////////////////image/////////////
+        this.app.post('/uploadImagen', (req, res) => {
+            const file = req.body.src;
+            const name = req.body.tipo;
+            const id = req.body.id;
+            const binaryData = Buffer.from(file.replace(/^data:image\/[a-z]+;base64,/, ""), 'base64').toString('binary');
+            fs_1.default.writeFile(`${__dirname}/Images/` + name + '/' + id + '.jpg', binaryData, "binary", (err) => {
+                console.log(err);
+            });
+            res.json({ fileName: id + '.jpg' });
+        });
+        /////////////////mail////////
         this.app.post('/sendEmailResetPassword', (req, res) => {
             const tempres = emailAccess(req.body);
             if (tempres.Success == 0) {

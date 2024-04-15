@@ -24,6 +24,7 @@ class Server {
         this.config();
         this.routes();
         this.app.use('/documentacion', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
+        this.app.use(express_1.default.static(__dirname + "/img"));
     }
     config() {
         this.app.set('port', process.env.PORT || 3000); //En que puerto va a ejecutar
