@@ -55,6 +55,7 @@ class OffersController {
                         const unset_offer = yield database_1.default.query('UPDATE products SET Price = Price+((Price/(100-?))*?), Offer = 1 WHERE IdProduct = ?', [offer.PercentDiscount, offer.PercentDiscount, product]);
                     }
                 }
+                res.json({ message: 'Offer created successfully', offerId: offerId });
             }
             catch (error) {
                 res.status(500).json({ error: error });

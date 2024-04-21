@@ -51,8 +51,7 @@ class CircuitsController {
             try {
                 const { id } = req.params;
                 const resp = yield database_1.default.query(`DELETE FROM circuits WHERE IdCircuit = ${id}`);
-                const resp_gp = yield database_1.default.query(`DELETE FROM gp WHERE IdGP = ${id}`);
-                res.json(resp_gp);
+                const resp_gp = yield database_1.default.query(`DELETE FROM gp WHERE IdCircuit = ${id}`);
                 res.json(resp);
             }
             catch (error) {
