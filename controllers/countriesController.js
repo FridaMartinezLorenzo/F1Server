@@ -52,7 +52,7 @@ class CountriesController {
             try {
                 const { id } = req.params;
                 const resp_drivers = yield database_1.default.query(`DELETE FROM drivers WHERE IdCountry = ${id}`);
-                const resp_gp = yield database_1.default.query(`DELETE FROM gp WHERE IdCountry = ${id}`);
+                const resp_gp = yield database_1.default.query(`DELETE FROM circuits WHERE IdCountry = ${id}`);
                 const resp = yield database_1.default.query(`DELETE FROM countries WHERE IdCountry = ${id}`);
                 res.json(resp);
             }
