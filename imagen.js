@@ -36,6 +36,17 @@ class Server {
             });
             res.json({ fileName: id + '.jpg' });
         });
+        this.app.post('/deleteImagen', (req, res) => {
+            const name = req.body.tipo;
+            const id = req.body.id;
+            try {
+                var sourceImg = `${__dirname}/Images/` + name + '/' + id + '.jpg';
+                fs_1.default.unlinkSync(sourceImg);
+            }
+            catch (error) {
+            }
+            res.json("imagen eliminada");
+        });
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
