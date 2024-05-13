@@ -13,6 +13,7 @@ class OffersRoutes {
         this.router.post('/createOffer/', offersController_1.offersController.createOffer);
         this.router.put('/updateOffer/:id', offersController_1.offersController.updateOffer);
         this.router.delete('/deleteOffer/:id', offersController_1.offersController.deleteOffer);
+        this.router.delete('/deleteOfferProduct/:id/:idProduct', offersController_1.offersController.deleteOfferProduct);
         this.router.get('/getOfferProducts/:id', offersController_1.offersController.getOfferProducts);
         this.router.get('/verifyOfferDuration/:id', offersController_1.offersController.verifyOfferDuration);
         this.router.get('/verifyAllOffersDuration/', offersController_1.offersController.verifyAllOffersDuration);

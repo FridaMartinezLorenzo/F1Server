@@ -50,8 +50,14 @@ class CircuitsController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
+                //Buscar si realizan incidencias en la tabla de gp antes de eliminar el circuito
+                const resp_gp = yield database_1.default.query(`SELECT * FROM gp WHERE IdCircuit = ${id} LIMIT 1`);
+                console.log(resp_gp);
+                if (resp_gp.length > 0) {
+                    res.json({ exito: -1, message: "No se puede eliminar el circuito porque tiene registros asociados en la tabla gp" });
+                    return;
+                }
                 const resp = yield database_1.default.query(`DELETE FROM circuits WHERE IdCircuit = ${id}`);
-                const resp_gp = yield database_1.default.query(`DELETE FROM gp WHERE IdCircuit = ${id}`);
                 res.json(resp);
             }
             catch (error) {

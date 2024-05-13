@@ -68,7 +68,6 @@ class OffersController {
                 const { id } = req.params;
                 const { Name, Nombre, PercentDiscount, DateStart, DateEnd, Products } = req.body;
                 const DateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
-                console.log('DateNow:', DateNow);
                 //Hacemos el json de lo que se va a actualizar
                 const updatedOffer = {
                     Name,
@@ -77,7 +76,6 @@ class OffersController {
                     DateStart,
                     DateEnd
                 };
-                console.log('Offer to update:', updatedOffer);
                 //En caso de que la oferta este vigente se actualiza el precio de los productos
                 if (DateStart < DateNow && DateEnd > DateNow) {
                     console.log('Offer is active');
@@ -147,6 +145,18 @@ class OffersController {
                 else {
                     res.status(404).json({ 'message': 'Offer not found' });
                 }
+            }
+            catch (error) {
+                res.status(500).json({ error: error });
+            }
+        });
+    }
+    deleteOfferProduct(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id, idProduct } = req.params;
+                const response = yield database_1.default.query("DELETE FROM `offer_product` WHERE `IdOffer` = ? AND `IdProduct` = ?", [id, idProduct]);
+                console.log(response);
             }
             catch (error) {
                 res.status(500).json({ error: error });

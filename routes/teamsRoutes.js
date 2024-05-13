@@ -12,7 +12,7 @@ class TeamsRoutes {
         this.router.get('/getTeam/:id', teamsController_1.teamsController.getTeam);
         this.router.post('/createTeam/', teamsController_1.teamsController.createTeam);
         this.router.put('/updateTeam/:id', teamsController_1.teamsController.updateTeam);
-        this.router.delete('/deteleTeam/:id', teamsController_1.teamsController.deleteTeam);
+        this.router.delete('/deleteTeam/:id', teamsController_1.teamsController.deleteTeam);
         //this.router.get('/showAllteams/',validarToken,teamsController.showAllteams);
         //this.router.get('/getTeam/:id',validarToken,teamsController.getTeam);
         //this.router.post('/createTeam/',validarToken,teamsController.createTeam);

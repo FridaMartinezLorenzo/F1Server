@@ -51,8 +51,19 @@ class CountriesController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const resp_drivers = yield database_1.default.query(`DELETE FROM drivers WHERE IdCountry = ${id}`);
-                const resp_gp = yield database_1.default.query(`DELETE FROM circuits WHERE IdCountry = ${id}`);
+                //Buscar si realizan incidencias en la tabla de drivers antes de eliminar el pais
+                const resp_drivers = yield database_1.default.query(`SELECT * FROM drivers WHERE IdCountry = ${id} LIMIT 1`);
+                if (resp_drivers.length > 0) {
+                    res.json({ exito: -1, message: "No se puede eliminar el pais porque tiene registros asociados en la tabla drivers" });
+                    return;
+                }
+                //Buscar si realizan incidencias en la tabla de circuits antes de eliminar el pais
+                const resp_gp = yield database_1.default.query(`SELECT * FROM circuits WHERE IdCountry = ${id} LIMIT 1`);
+                if (resp_gp.length > 0) {
+                    res.json({ exito: -1, message: "No se puede eliminar el pais porque tiene registros asociados en la tabla circuits" });
+                    return;
+                }
+                //Eliminar pais sino hay relaciones en las tablas drivers y circuits
                 const resp = yield database_1.default.query(`DELETE FROM countries WHERE IdCountry = ${id}`);
                 res.json(resp);
             }

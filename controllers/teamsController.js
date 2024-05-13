@@ -50,9 +50,20 @@ class TeamsController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
+                //revisar si hay algun producto relacionado con team
+                const resp_drivers = yield database_1.default.query(`SELECT * FROM products WHERE IdTeam = ${id} LIMIT 1`);
+                if (resp_drivers.length > 0) {
+                    res.json({ exito: -1, message: "Existen productos asociados al equipo, no es posible eliminarlo" });
+                    return;
+                }
+                //revisar si hay algun driver relacionado con el team
+                const resp_gp = yield database_1.default.query(`SELECT * FROM drivers WHERE IdTeam = ${id} LIMIT 1`);
+                if (resp_gp.length > 0) {
+                    res.json({ exito: -1, message: "Existen productos asociados al equipo, no es posible eliminarlo" });
+                    return;
+                }
+                //si paso el filtr, se elimina
                 const resp_teams = yield database_1.default.query(`DELETE FROM teams WHERE IdTeam = ${id}`);
-                const resp_drivers = yield database_1.default.query(`DELETE FROM drivers WHERE IdTeam = ${id}`);
-                const resp_products = yield database_1.default.query('DELETE FROM products WHERE IdTeam = ?', [id]);
                 res.json(resp_teams);
             }
             catch (error) {
